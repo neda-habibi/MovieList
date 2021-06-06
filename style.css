@@ -1,0 +1,59 @@
+
+body {
+    background-color: blanchedalmond;
+    font-family: 'Josefin Sans', sans-serif;
+  }
+
+h1 {
+      text-align: center;
+      margin-top: 50px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 30px;
+  }
+
+table {
+    table-layout: fixed;
+    margin-left:auto; 
+    margin-right:auto;
+    width: 60%;
+    min-width: 620px;
+    border-collapse:separate;
+    border: 5px solid rgb(207, 177, 207);
+    border-style:groove;
+    cursor: default;
+  }
+  
+.thead {
+      position:static;
+      background-color:rgb(240, 159, 159);
+      /*cursor: pointer;*/
+  } 
+
+thead th:nth-child() {
+    width: 30%;
+  }
+
+tr {
+      text-align: center;
+  }
+
+tr:nth-child(even) {
+    background-color : rgb(235, 183, 183);
+}
+ 
+th, td {
+    padding: 20px;
+  }
+
+  th {
+    cursor: pointer;
+  }
+  
+  thead td {
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+tr:hover {background-color: #a38181;}
+

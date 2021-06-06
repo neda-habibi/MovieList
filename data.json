@@ -1,0 +1,38 @@
+
+    data = `[
+        {
+            "userId": "1",
+            "firstName": "Ali",
+            "lastName": "Ahmadi",
+            "age": 34,
+            "phoneNumber": "34567"
+        },
+        {
+            "userId": "2",
+            "firstName": "Mohammad",
+            "lastName": "Hosseini",
+            "age": 33,
+            "phoneNumber": "67890"
+        },
+        {
+            "userId": "3",
+            "firstName": "Hassan",
+            "lastName": "Alami",
+            "age": 20,
+            "phoneNumber": "45879"
+        },
+        {
+            "userId": "4",
+            "firstName": "Akbar",
+            "lastName": "Akbari",
+            "age": 23,
+            "phoneNumber": "98455"
+        },
+        {
+            "userId": "5",
+            "firstName": "Hossein",
+            "lastName": "Habibi",
+            "age": 32,
+            "phoneNumber": "12455"
+        }
+    ]`;
