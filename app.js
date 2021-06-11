@@ -40,8 +40,28 @@ class ElementBuilder {
         return this;
     }
 
+    setKeyUp(fn) {
+        this.element.onkeyup = fn;
+        return this;
+    }
+
+    setName(name) {
+        this.element.name = name;
+        return this;
+    }
+
     setAttribute(attributeName, attributeValue) {
         this.element.setAttribute(attributeName, attributeValue);
+        return this;
+    }
+
+    setPlaceHolder(text) {
+        this.element.placeholder = text;
+        return this;
+    }
+
+    setInnerHtml(htmlValue) {
+        this.element.innerHTML = htmlValue;
         return this;
     }
 }
@@ -53,6 +73,29 @@ const builder = {
     }
 }
 
+const hearderMapper = [
+    {
+        property: 'userId',
+        columnName: 'Index'
+    },
+    {
+        property: 'firstName',
+        columnName: 'First Name'
+    },
+    {
+        property: 'lastName',
+        columnName: 'Last Name'
+    },
+    {
+        property: 'age',
+        columnName: 'Age'
+    },
+    {
+        property: 'phoneNumber',
+        columnName: 'Phone Number'
+    }
+]
+
 let countLoad = 0;
 let table, thead, tr;
 var persons = JSON.parse(data);
@@ -61,6 +104,30 @@ function load() {
     if (countLoad === 0) {
         var container = document.getElementById('dataContainer');
 
+        searchBox = builder
+            .create('div')
+            .setClassName('searchBox')
+            .setParent(container);
+
+        input = builder
+            .create('input')
+            .setName('input')
+            .setClassName('searchInput')
+            .setType('text')
+            .setPlaceHolder('Keyword...')
+            .setParent(searchBox)
+            .setKeyUp(function () {
+                const keyword = document.getElementsByName('input')[0].value;
+                persons = persons.filter(person =>
+                    person.firstName.toLowerCase().includes(keyword.toLowerCase())
+                    || person.lastName.toLowerCase().includes(keyword.toLowerCase())
+                    || person.age == keyword
+                    || person.phoneNumber.includes(keyword)
+                );
+                document.querySelectorAll("tbody")[0].remove();
+                load(persons);
+                //document.getElementsByName('input')[0].value = '';
+            });
 
         table = builder
             .create('table')
@@ -79,14 +146,15 @@ function load() {
             let th = builder
                 .create('td')
                 .setParent(tr)
-                .setText(prop)
+                .setText(hearderMapper.find(obj => prop == obj.property).columnName)
                 .setAttribute('order', 'asc')
+                .setAttribute('property', prop)
                 .setOnclick(function (event) {
 
-                    var indiicatedHeaders = document.querySelectorAll('.asc , .desc');
-                    indiicatedHeaders.forEach(x => x.className = '');
+                    var indicatedHeaders = document.querySelectorAll('.asc , .desc');
+                    indicatedHeaders.forEach(x => x.className = '');
 
-                    let property = event.srcElement.textContent;
+                    let property = event.srcElement.getAttribute('property');
                     let order = event.srcElement.attributes.order.value;
 
 
@@ -141,8 +209,6 @@ function load() {
 
     countLoad = 1;
 
-
-
     const tbody = builder
         .create('tbody')
         .setParent(table);
@@ -159,5 +225,6 @@ function load() {
                 .setText(person[property]);
         }
     }
+    persons = JSON.parse(data);
 
 }

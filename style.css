@@ -3,6 +3,10 @@ body {
     background-color: blanchedalmond;
     font-family: 'Josefin Sans', sans-serif;
   }
+  
+  container {
+    width: 60%;
+  }
 
 h1 {
       text-align: center;
@@ -28,7 +32,7 @@ th tr td{
       position:static;
       background-color:rgb(199, 108, 108);
       padding: 30px;
-      border: 1px solid rgb(150, 112, 150);
+      border-bottom: 3px groove solid rgb(54, 52, 54);
   } 
 
   .asc {
@@ -56,6 +60,10 @@ tr {
 tr:nth-child(even) {
     background-color : rgb(235, 183, 183);
 }
+
+tr:nth-child(odd) {
+  background-color : rgb(189, 154, 154);
+}
  
 th, td {
     padding: 20px;
@@ -78,4 +86,31 @@ td:nth-child(1){
 
 td:nth-child(4){
   width: 50px;
+}
+
+.searchBox {
+margin: auto;
+text-align: left;
+margin-bottom: 10px;
+width: 60%;
+min-width: 450px;
+}
+
+.searchInput {
+  border: 0;
+  border-bottom: 2px solid rgb(207, 177, 207);
+  outline: none;
+  width: 98%;
+  background-color: transparent;
+  font-size: 18px;
+  font-family: 'Josefin Sans', sans-serif;
+  padding: 5px;
+}
+
+::placeholder {
+  color: rgb(202, 136, 136);
+}
+
+button:hover {
+  background-color: rgb(224, 210, 210);
 }

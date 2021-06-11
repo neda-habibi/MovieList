@@ -2,37 +2,58 @@
     data = `[
         {
             "userId": "1",
-            "firstName": "Ali",
-            "lastName": "Ahmadi",
+            "firstName": "Selena",
+            "lastName": "Gomez",
             "age": 34,
             "phoneNumber": "34567"
         },
         {
             "userId": "2",
-            "firstName": "Mohammad",
-            "lastName": "Hosseini",
+            "firstName": "Dua",
+            "lastName": "Lipa",
             "age": 33,
             "phoneNumber": "67890"
         },
         {
             "userId": "3",
-            "firstName": "Hassan",
-            "lastName": "Alami",
+            "firstName": "Miley",
+            "lastName": "Cyrus",
             "age": 20,
             "phoneNumber": "45879"
         },
         {
             "userId": "4",
-            "firstName": "Akbar",
-            "lastName": "Akbari",
+            "firstName": "Harry",
+            "lastName": "Styles",
             "age": 23,
             "phoneNumber": "98455"
         },
         {
             "userId": "5",
-            "firstName": "Hossein",
-            "lastName": "Habibi",
+            "firstName": "Taylor",
+            "lastName": "Swift",
             "age": 32,
             "phoneNumber": "12455"
+        },
+        {
+            "userId": "6",
+            "firstName": "Mariah",
+            "lastName": "Carey",
+            "age": 50,
+            "phoneNumber": "087454"
+        },
+        {
+            "userId": "7",
+            "firstName": "Alicia",
+            "lastName": "Keys",
+            "age": 47,
+            "phoneNumber": "43587"
+        },
+        {
+            "userId": "8",
+            "firstName": "Freddie",
+            "lastName": "Mercury",
+            "age": 70,
+            "phoneNumber": "897645"
         }
     ]`;
