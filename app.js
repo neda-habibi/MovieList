@@ -64,6 +64,16 @@ class ElementBuilder {
         this.element.innerHTML = htmlValue;
         return this;
     }
+
+    hide() {
+        this.element.style.display = 'none';
+        return this;
+    }
+
+    show() {
+        this.element.style.display = 'block';
+        return this;
+    }
 }
 
 
@@ -73,35 +83,24 @@ const builder = {
     }
 }
 
-const hearderMapper = [
-    {
-        property: 'userId',
-        columnName: 'Index'
-    },
-    {
-        property: 'firstName',
-        columnName: 'First Name'
-    },
-    {
-        property: 'lastName',
-        columnName: 'Last Name'
-    },
-    {
-        property: 'age',
-        columnName: 'Age'
-    },
-    {
-        property: 'phoneNumber',
-        columnName: 'Phone Number'
-    }
-]
 
 let countLoad = 0;
 let table, thead, tr;
-var persons = JSON.parse(data);
-function load() {
+var films = "";
+var filteredFilms;
 
+
+fetch('https://my-json-server.typicode.com/bemaxima/fake-api/movies')
+    .then(response => response.json())
+    .then(filmsArray => {
+        films = filmsArray;
+        load();
+    });
+
+
+function load() {
     if (countLoad === 0) {
+        filteredFilms = films;
         var container = document.getElementById('dataContainer');
 
         searchBox = builder
@@ -118,16 +117,23 @@ function load() {
             .setParent(searchBox)
             .setKeyUp(function () {
                 const keyword = document.getElementsByName('input')[0].value;
-                persons = persons.filter(person =>
-                    person.firstName.toLowerCase().includes(keyword.toLowerCase())
-                    || person.lastName.toLowerCase().includes(keyword.toLowerCase())
-                    || person.age == keyword
-                    || person.phoneNumber.includes(keyword)
+                filteredFilms = films.filter(film =>
+                    film.name.toLowerCase().includes(keyword.toLowerCase())
+                    || film.description.toLowerCase().includes(keyword.toLowerCase())
+                    || film.rate == keyword
+                    || film.id == keyword
                 );
                 document.querySelectorAll("tbody")[0].remove();
-                load(persons);
-                //document.getElementsByName('input')[0].value = '';
+                load(filteredFilms);
             });
+
+        add = builder
+        .create('img')
+        .setAttribute('src','./images/whitePlus.png')   
+        .setAttribute('alt','add')
+        .setParent(searchBox)
+        .setClassName('add')
+        .setOnclick(()=>alert(`I'm working on it.`));
 
         table = builder
             .create('table')
@@ -142,11 +148,11 @@ function load() {
             .create('tr')
             .setParent(thead);
 
-        for (let prop in persons[0]) {
+        for (let prop in films[0]) {
             let th = builder
                 .create('td')
                 .setParent(tr)
-                .setText(hearderMapper.find(obj => prop == obj.property).columnName)
+                .setText(prop)
                 .setAttribute('order', 'asc')
                 .setAttribute('property', prop)
                 .setOnclick(function (event) {
@@ -158,7 +164,7 @@ function load() {
                     let order = event.srcElement.attributes.order.value;
 
 
-                    persons = persons.sort((first, second) => {
+                    filteredFilms = films.sort((first, second) => {
 
                         if (order == 'asc') {
                             th.setClassName('asc');
@@ -213,18 +219,62 @@ function load() {
         .create('tbody')
         .setParent(table);
 
-    for (let person of persons) {
+    for (let film of filteredFilms) {
         let row = builder
             .create('tr')
             .setParent(tbody);
 
-        for (let property in person) {
+        for (let property in film) {
             let td = builder
                 .create('td')
                 .setParent(row)
-                .setText(person[property]);
+                .setText(film[property]);
         }
     }
-    persons = JSON.parse(data);
 
+
+    modal = builder
+    .create('div')
+    .setParent(container)
+    .setClassName('modal')
+    .hide();
+
+    dataBox = builder
+    .create('div')
+    .setParent(modal)
+    .setClassName('dataBox');
+
+    filmName = builder
+    .create('input')
+    .setType('text')
+    .setClassName('filmName')
+    .setPlaceHolder('Film Name ...')
+    .setParent(dataBox);
+
+    desc = builder
+    .create('textarea')
+    .setParent(dataBox)
+    .setClassName('desc')
+    .setPlaceHolder('Enter Description ...');
+
+    rate = builder
+    .create('input')
+    .setType('decimal')
+    .setParent(dataBox)
+    .setClassName('rate')
+
+    decisionBox = builder
+    .create('div')
+    .setClassName('decisionBox')
+    .setParent(modal);
+
+    saveBtn = builder
+    .create('buttomn')
+    .setText('Save')
+    .setParent(decisionBox);
+
+    cancelBtn = builder
+    .create('buttomn')
+    .setText('Cancel')
+    .setParent(decisionBox);
 }

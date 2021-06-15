@@ -1,6 +1,6 @@
 
 body {
-    background-color: blanchedalmond;
+    background: linear-gradient(to right, #25c481, #25b7c4);
     font-family: 'Josefin Sans', sans-serif;
   }
   
@@ -14,25 +14,30 @@ h1 {
       margin-left: auto;
       margin-right: auto;
       font-size: 30px;
+      color: #fff;
   }
 
 table {
     table-layout: fixed;
     margin-left:auto; 
     margin-right:auto;
-    width: 60%;
+    width: 90%;
     min-width: 710px;
     border-collapse:separate;
-    border: 5px solid rgb(207, 177, 207);
-    border-style:groove;
+    border: 3px solid #fff;
+    border-collapse:collapse;
+    background-color: transparent;
     cursor: default;
+    table-layout: fixed;
+    color: #fff;
+    line-height:1.6;
   }
   
 th tr td{
       position:static;
-      background-color:rgb(199, 108, 108);
       padding: 30px;
-      border-bottom: 3px groove solid rgb(54, 52, 54);
+      border: 3px groove solid #fff;
+      background-color: rgb(157, 241, 223);
   } 
 
   .asc {
@@ -49,24 +54,11 @@ th tr td{
     background-size: 15px;
   }
 
-tr {
-      text-align: center;
-  }
-
- thead tr:nth-child(1) {
-    background-color : rgb(229, 145, 145);
-}
-
-tr:nth-child(even) {
-    background-color : rgb(235, 183, 183);
-}
-
-tr:nth-child(odd) {
-  background-color : rgb(189, 154, 154);
-}
- 
 th, td {
+  text-align: center;
     padding: 20px;
+    text-transform: uppercase;
+    border: solid 1px #fff;
   }
 
   th {
@@ -76,41 +68,73 @@ th, td {
   thead td {
     font-weight: 600;
     cursor: pointer;
+    background-color: rgb(82, 185, 185);
   }
 
-tr:hover {background-color: #a38181;}
+tr:hover {background-color: rgba(83, 128, 65,0.3);}
 
-td:nth-child(1){
-  width: 50px;
+ td:nth-child(1){
+  width: 30px;
+} 
+
+td:nth-child(2){
+  width: 140px;
 }
 
-td:nth-child(4){
-  width: 50px;
+td:nth-child(3){
+  width: 70px;
+}
+
+tbody td:nth-child(even){
+  text-align: left;
 }
 
 .searchBox {
 margin: auto;
 text-align: left;
-margin-bottom: 10px;
-width: 60%;
-min-width: 450px;
+width: 90%;
+min-width: 710px;
 }
 
 .searchInput {
   border: 0;
-  border-bottom: 2px solid rgb(207, 177, 207);
+  border-bottom: 2px solid  #fff;;
   outline: none;
-  width: 98%;
+  width: 93%;
   background-color: transparent;
+  color: #fff;
   font-size: 18px;
   font-family: 'Josefin Sans', sans-serif;
   padding: 5px;
+  float: left;
+  margin-bottom: 10px;
+  margin-left: 10px;
 }
 
 ::placeholder {
-  color: rgb(202, 136, 136);
+  color: #fff;;
 }
 
-button:hover {
-  background-color: rgb(224, 210, 210);
+.add {
+  background-color: transparent;
+  height: 30px;
+  width: 30px;
+  float:right;
+  margin:0 10px;
+  position: relative;
 }
+
+.add:hover {
+  background-color: rgba(186, 236, 248,0.4);
+}
+
+.listing-table {
+  display: inline-block;
+}
+
+/* prev, pageNumber, next {
+  color: #a38181;
+  display: inline-block;
+  align-content: center;
+  overflow: auto;
+} */
