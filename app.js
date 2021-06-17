@@ -50,6 +50,11 @@ class ElementBuilder {
         return this;
     }
 
+    setId(id) {
+        this.element.id = id;
+        return this;
+    }
+
     setAttribute(attributeName, attributeValue) {
         this.element.setAttribute(attributeName, attributeValue);
         return this;
@@ -85,9 +90,25 @@ const builder = {
 
 
 let countLoad = 0;
-let table, thead, tr;
-var films = "";
-var filteredFilms;
+let table,
+    thead,
+    tr,
+    filteredFilms,
+    modal,
+    closeDiv,
+    closeBtn,
+    dataBox,
+    filmPart,
+    filmLabel,
+    filmNameInput,
+    rateLabel,
+    rateInput,
+    descPart,
+    descLabel,
+    descInput,
+    decisionBox,
+    saveBtn;
+var films = '';
 
 
 fetch('https://my-json-server.typicode.com/bemaxima/fake-api/movies')
@@ -102,6 +123,142 @@ function load() {
     if (countLoad === 0) {
         filteredFilms = films;
         var container = document.getElementById('dataContainer');
+
+        modal = builder
+            .create('div')
+            .setClassName('modal')
+            .setParent(container)
+            .hide();
+
+        closeDiv = builder
+            .create('div')
+            .setParent(modal)
+            .setClassName('closeDiv');
+
+        closeBtn = builder
+            .create('span')
+            .setParent(closeDiv)
+            .setClassName('closeBtn')
+            .setInnerHtml('&times;')
+            .setOnclick(() => modal.hide());
+
+        dataBox = builder
+            .create('div')
+            .setClassName('modal')
+            .setParent(modal)
+            .setClassName('dataBox');
+
+        idPart = builder
+            .create('div')
+            .setClassName('dataPart')
+            .setParent(dataBox);
+
+        idLabel = builder
+            .create('label')
+            .setParent(idPart)
+            .setClassName('idLabel')
+            .setText('Film ID: ')
+
+        idInput = builder
+            .create('input')
+            .setType('number')
+            .setAttribute('min', '1')
+            .setId('idInput')
+            .setClassName('idInput')
+            .setPlaceHolder('Enter ID')
+            .setParent(idPart);
+
+        ratePart = builder
+            .create('div')
+            .setClassName('dataPart')
+            .setParent(dataBox);
+
+        rateLabel = builder
+            .create('label')
+            .setParent(ratePart)
+            .setClassName('rateLabel')
+            .setText('Rate: ');
+
+        rateInput = builder
+            .create('input')
+            .setType('number')
+            .setAttribute('step', '0.1')
+            .setAttribute('min', '0')
+            .setAttribute('max', '10')
+            .setId('rateInput')
+            .setParent(ratePart)
+            .setClassName('rate');
+
+        filmPart = builder
+            .create('div')
+            .setClassName('dataPart')
+            .setParent(dataBox);
+
+        filmLabel = builder
+            .create('label')
+            .setParent(filmPart)
+            .setClassName('filmLabel')
+            .setText('Film Name: ')
+
+        filmNameInput = builder
+            .create('input')
+            .setType('text')
+            .setId('filmNameInput')
+            .setClassName('filmName')
+            .setPlaceHolder('Film Name ...')
+            .setParent(filmPart);
+
+        descPart = builder
+            .create('div')
+            .setClassName('descPart')
+            .setParent(dataBox);
+
+        descLabel = builder
+            .create('label')
+            .setParent(descPart)
+            .setClassName('descLabel')
+            .setText('Description: ')
+
+        descInput = builder
+            .create('textarea')
+            .setParent(descPart)
+            .setId('descInput')
+            .setClassName('description')
+            .setPlaceHolder('Enter Description ...');
+
+        decisionBox = builder
+            .create('div')
+            .setClassName('decisionBox')
+            .setParent(modal);
+
+        saveBtn = builder
+            .create('button')
+            .setText('Save')
+            .setClassName('saveBtn')
+            .setParent(decisionBox)
+            .setOnclick(() => {
+                var newFilm = {
+                    "id": document.getElementById('idInput').value,
+                    "name": document.getElementById('filmNameInput').value,
+                    "rate": document.getElementById('rateInput').value,
+                    "description": document.getElementById('descInput').value
+                }
+
+                if (document.getElementById('filmNameInput').value != '') {
+
+                    films.push(newFilm);
+                    document.getElementById('idInput').value = '';
+                    document.getElementById('filmNameInput').value = '';
+                    document.getElementById('rateInput').value = '';
+                    document.getElementById('descInput').value = '';
+
+                    modal.hide();
+                    load(films);
+                }
+                else {
+                    alert('Enter Film Name');
+                }
+            });
 
         searchBox = builder
             .create('div')
@@ -128,12 +285,12 @@ function load() {
             });
 
         add = builder
-        .create('img')
-        .setAttribute('src','./images/whitePlus.png')   
-        .setAttribute('alt','add')
-        .setParent(searchBox)
-        .setClassName('add')
-        .setOnclick(()=>alert(`I'm working on it.`));
+            .create('img')
+            .setAttribute('src', './images/whitePlus.png')
+            .setAttribute('alt', 'add')
+            .setParent(searchBox)
+            .setClassName('add')
+            .setOnclick(() => modal.show());
 
         table = builder
             .create('table')
@@ -233,48 +390,5 @@ function load() {
     }
 
 
-    modal = builder
-    .create('div')
-    .setParent(container)
-    .setClassName('modal')
-    .hide();
 
-    dataBox = builder
-    .create('div')
-    .setParent(modal)
-    .setClassName('dataBox');
-
-    filmName = builder
-    .create('input')
-    .setType('text')
-    .setClassName('filmName')
-    .setPlaceHolder('Film Name ...')
-    .setParent(dataBox);
-
-    desc = builder
-    .create('textarea')
-    .setParent(dataBox)
-    .setClassName('desc')
-    .setPlaceHolder('Enter Description ...');
-
-    rate = builder
-    .create('input')
-    .setType('decimal')
-    .setParent(dataBox)
-    .setClassName('rate')
-
-    decisionBox = builder
-    .create('div')
-    .setClassName('decisionBox')
-    .setParent(modal);
-
-    saveBtn = builder
-    .create('buttomn')
-    .setText('Save')
-    .setParent(decisionBox);
-
-    cancelBtn = builder
-    .create('buttomn')
-    .setText('Cancel')
-    .setParent(decisionBox);
 }
