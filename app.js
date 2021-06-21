@@ -70,6 +70,11 @@ class ElementBuilder {
         return this;
     }
 
+    setSrc(src) {
+        this.element.src = src;
+        return this;
+    }
+
     hide() {
         this.element.style.display = 'none';
         return this;
@@ -90,25 +95,9 @@ const builder = {
 
 
 let countLoad = 0;
-let table,
-    thead,
-    tr,
-    filteredFilms,
-    modal,
-    closeDiv,
-    closeBtn,
-    dataBox,
-    filmPart,
-    filmLabel,
-    filmNameInput,
-    rateLabel,
-    rateInput,
-    descPart,
-    descLabel,
-    descInput,
-    decisionBox,
-    saveBtn;
+let filteredFilms;
 var films = '';
+let rowToDelete;
 
 
 fetch('https://my-json-server.typicode.com/bemaxima/fake-api/movies')
@@ -119,12 +108,17 @@ fetch('https://my-json-server.typicode.com/bemaxima/fake-api/movies')
     });
 
 
+function clearTbody() {
+    document.querySelectorAll("tbody")[0].remove();
+}
+
+
 function load() {
     if (countLoad === 0) {
         filteredFilms = films;
         var container = document.getElementById('dataContainer');
 
-        modal = builder
+        addModal = builder
             .create('div')
             .setClassName('modal')
             .setParent(container)
@@ -132,7 +126,7 @@ function load() {
 
         closeDiv = builder
             .create('div')
-            .setParent(modal)
+            .setParent(addModal)
             .setClassName('closeDiv');
 
         closeBtn = builder
@@ -140,12 +134,12 @@ function load() {
             .setParent(closeDiv)
             .setClassName('closeBtn')
             .setInnerHtml('&times;')
-            .setOnclick(() => modal.hide());
+            .setOnclick(() => addModal.hide());
 
         dataBox = builder
             .create('div')
             .setClassName('modal')
-            .setParent(modal)
+            .setParent(addModal)
             .setClassName('dataBox');
 
         idPart = builder
@@ -229,7 +223,7 @@ function load() {
         decisionBox = builder
             .create('div')
             .setClassName('decisionBox')
-            .setParent(modal);
+            .setParent(addModal);
 
         saveBtn = builder
             .create('button')
@@ -252,13 +246,204 @@ function load() {
                     document.getElementById('rateInput').value = '';
                     document.getElementById('descInput').value = '';
 
-                    modal.hide();
+                    addModal.hide();
+                    clearTbody();
                     load(films);
                 }
                 else {
                     alert('Enter Film Name');
                 }
             });
+
+
+
+
+        deleteModal = builder
+            .create('div')
+            .setParent(container)
+            .setClassName('deleteModal')
+            .hide();
+
+
+        closeDiv = builder
+            .create('div')
+            .setParent(deleteModal)
+            .setClassName('closeDiv');
+
+        closeBtn = builder
+            .create('span')
+            .setParent(closeDiv)
+            .setClassName('closeBtn')
+            .setInnerHtml('&times;')
+            .setOnclick(() => deleteModal.hide());
+
+        deleteDataBox = builder
+            .create('div')
+            .setParent(deleteModal)
+            .setClassName('deleteDataBox');
+
+        deleteMessage = builder
+            .create('p')
+            .setParent(deleteDataBox)
+            .setText('Are you sure you want to delete this record?')
+            .setClassName('deleteMessage');
+
+        decisionBox = builder
+            .create('div')
+            .setClassName('decisionBox')
+            .setParent(deleteModal);
+
+        cancelBtn = builder
+            .create('button')
+            .setText('No')
+            .setParent(decisionBox)
+            .setClassName('cancelBtn')
+            .setOnclick(() => deleteModal.hide());
+
+        approveBtn = builder
+            .create('button')
+            .setText('Yes')
+            .setClassName('approveBtn')
+            .setParent(decisionBox)
+            .setOnclick(() => {
+                var rowId = rowToDelete.getAttribute('rowId')
+                rowToDelete.remove();
+                deleteModal.hide();
+                films = films.filter(t => t.id != rowId)
+            });
+
+
+
+
+
+        editModal = builder
+            .create('div')
+            .setClassName('modal')
+            .setParent(container)
+            .hide();
+
+        closeDiv = builder
+            .create('div')
+            .setParent(editModal)
+            .setClassName('closeDiv');
+
+        closeBtn = builder
+            .create('span')
+            .setParent(closeDiv)
+            .setClassName('closeBtn')
+            .setInnerHtml('&times;')
+            .setOnclick(() => editModal.hide());
+
+        dataBox = builder
+            .create('div')
+            .setClassName('modal')
+            .setParent(editModal)
+            .setClassName('dataBox');
+
+        idPart = builder
+            .create('div')
+            .setClassName('dataPart')
+            .setParent(dataBox);
+
+        idLabel = builder
+            .create('label')
+            .setParent(idPart)
+            .setClassName('idLabel')
+            .setText('Film ID: ')
+
+        idEditInput = builder
+            .create('input')
+            .setType('number')
+            .setAttribute('min', '1')
+            .setId('idEditInput')
+            .setClassName('idInput')
+            .setParent(idPart);
+
+        ratePart = builder
+            .create('div')
+            .setClassName('dataPart')
+            .setParent(dataBox);
+
+        rateLabel = builder
+            .create('label')
+            .setParent(ratePart)
+            .setClassName('rateLabel')
+            .setText('Rate: ');
+
+        rateEditInput = builder
+            .create('input')
+            .setType('number')
+            .setAttribute('step', '0.1')
+            .setAttribute('min', '0')
+            .setAttribute('max', '10')
+            .setId('rateEditInput')
+            .setParent(ratePart)
+            .setClassName('rate');
+
+        filmPart = builder
+            .create('div')
+            .setClassName('dataPart')
+            .setParent(dataBox);
+
+        filmLabel = builder
+            .create('label')
+            .setParent(filmPart)
+            .setClassName('filmLabel')
+            .setText('Film Name: ')
+
+        filmNameEditInput = builder
+            .create('input')
+            .setType('text')
+            .setId('filmNameEditInput')
+            .setClassName('filmName')
+            .setParent(filmPart);
+
+        descPart = builder
+            .create('div')
+            .setClassName('descPart')
+            .setParent(dataBox);
+
+        descLabel = builder
+            .create('label')
+            .setParent(descPart)
+            .setClassName('descLabel')
+            .setText('Description: ');
+
+        descEditInput = builder
+            .create('textarea')
+            .setParent(descPart)
+            .setId('descEditInput')
+            .setClassName('description');
+
+        decisionBox = builder
+            .create('div')
+            .setClassName('decisionBox')
+            .setParent(editModal);
+
+        saveBtn = builder
+            .create('button')
+            .setText('Save')
+            .setClassName('saveBtn')
+            .setParent(decisionBox)
+            .setOnclick(() => {
+
+                editingFilm.id = document.getElementById('idEditInput').value;
+                editingFilm.name = document.getElementById('filmNameEditInput').value;
+                editingFilm.rate = document.getElementById('rateEditInput').value;
+                editingFilm.description = document.getElementById('descEditInput').value;
+
+                editModal.hide();
+                clearTbody();
+                load();
+
+                document.getElementById('idEditInput').value = '';
+                document.getElementById('filmNameEditInput').value = '';
+                document.getElementById('rateEditInput').value = '';
+                document.getElementById('descEditInput').value = '';
+            });
+
+
+
 
         searchBox = builder
             .create('div')
@@ -280,7 +465,8 @@ function load() {
                     || film.rate == keyword
                     || film.id == keyword
                 );
-                document.querySelectorAll("tbody")[0].remove();
+
+                clearTbody();
                 load(filteredFilms);
             });
 
@@ -290,7 +476,7 @@ function load() {
             .setAttribute('alt', 'add')
             .setParent(searchBox)
             .setClassName('add')
-            .setOnclick(() => modal.show());
+            .setOnclick(() => addModal.show());
 
         table = builder
             .create('table')
@@ -354,7 +540,8 @@ function load() {
                         }
 
                     });
-                    document.querySelectorAll("tbody")[0].remove();
+
+                    clearTbody();
                     load();
 
 
@@ -368,6 +555,10 @@ function load() {
 
                 })
         }
+        let action = builder
+            .create('td')
+            .setParent(tr)
+            .setText('Actions');
     }
 
     countLoad = 1;
@@ -379,7 +570,10 @@ function load() {
     for (let film of filteredFilms) {
         let row = builder
             .create('tr')
+            .setAttribute('rowId', film.id)
             .setParent(tbody);
+
+
 
         for (let property in film) {
             let td = builder
@@ -387,8 +581,38 @@ function load() {
                 .setParent(row)
                 .setText(film[property]);
         }
+        let td = builder
+            .create('td')
+            .setClassName('actionTd')
+            .setParent(row);
+
+        let editAction = builder
+            .create('img')
+            .setParent(td)
+            .setSrc("./images/edit.png")
+            .setInnerHtml('alt="edit"')
+            .setClassName('editAction')
+            .setOnclick((event) => {
+                rowtoEdit = event.srcElement.parentElement.parentElement;
+                rowId = rowtoEdit.getAttribute('rowId');
+                editingFilm = films.find(t => t.id == rowId);
+                document.getElementById('idEditInput').value = editingFilm.id;
+                document.getElementById('rateEditInput').value = editingFilm.rate;
+                document.getElementById('filmNameEditInput').value = editingFilm.name;
+                document.getElementById('descEditInput').value = editingFilm.description;
+                editModal.show();
+            });
+
+        let deleteAction = builder
+            .create('img')
+            .setParent(td)
+            .setSrc("./images/delete.png")
+            .setInnerHtml('alt="delete"')
+            .setClassName('deleteAction')
+            .setOnclick((event) => {
+                rowToDelete = event.srcElement.parentElement.parentElement;
+                deleteModal.show();
+            });
+
     }
-
-
-
 }
